@@ -137,6 +137,8 @@
 .nav_logout {
     border: 0;
     background: transparent;
+    padding: 0.35rem 0.5rem;
+    font-size: 0.95rem !important;
 }
 
 .profile_item {
