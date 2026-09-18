@@ -1,0 +1,136 @@
+.add_button {
+    text-align: right;
+}
+
+.tr_color {
+    color: white;
+    background-color: #D83830;
+}
+
+.home_page {
+    min-height: calc(100vh - 72px);
+    padding: 3.5rem clamp(1.25rem, 5vw, 5rem);
+    color: #1f2933;
+    background: #f5f1e8;
+}
+
+.home_hero {
+    display: grid;
+    grid-template-columns: minmax(0, 1.05fr) minmax(280px, 0.95fr);
+    max-width: 1280px;
+    min-height: 430px;
+    margin: 0 auto;
+    overflow: hidden;
+    background: #f7c948;
+    box-shadow: 14px 14px 0 #1f2933;
+}
+
+.home_hero_content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: clamp(2rem, 6vw, 5rem);
+}
+
+.home_kicker {
+    margin: 0 0 1.25rem;
+    color: #c0392b;
+    font-size: 0.8rem;
+    font-weight: 800;
+    letter-spacing: 0.12rem;
+}
+
+.home_hero h1 {
+    max-width: 650px;
+    margin: 0;
+    font-size: clamp(2.4rem, 5vw, 5.25rem);
+    line-height: 0.98;
+    letter-spacing: 0;
+}
+
+.home_hero h1 span {
+    color: #c0392b;
+}
+
+.home_intro {
+    max-width: 470px;
+    margin: 1.5rem 0 2rem;
+    font-size: 1.15rem;
+    line-height: 1.6;
+}
+
+.home_cta {
+    align-self: flex-start;
+    padding: 0.85rem 1.4rem;
+    color: #fff;
+    background: #1f2933;
+    font-weight: 700;
+    text-decoration: none;
+    transition: transform 160ms ease, background 160ms ease;
+}
+
+.home_cta:hover {
+    color: #fff;
+    background: #c0392b;
+    transform: translateY(-3px);
+}
+
+.home_hero_image {
+    width: 100%;
+    height: 100%;
+    min-height: 320px;
+    object-fit: cover;
+    filter: saturate(0.9) contrast(1.05);
+}
+
+.home_features {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    max-width: 1280px;
+    margin: 3rem auto 0;
+}
+
+.home_features article {
+    padding: 1.5rem;
+    border-top: 4px solid #c0392b;
+    background: #fffdf8;
+}
+
+.home_features strong {
+    color: #c0392b;
+    font-size: 0.85rem;
+}
+
+.home_features h2 {
+    margin: 0.8rem 0 0.5rem;
+    font-size: 1.35rem;
+}
+
+.home_features p {
+    margin: 0;
+    color: #52606d;
+    line-height: 1.5;
+}
+
+@media (max-width: 760px) {
+    .home_page {
+        padding: 1.5rem 1rem 2.5rem;
+    }
+
+    .home_hero {
+        grid-template-columns: 1fr;
+        box-shadow: 7px 7px 0 #1f2933;
+    }
+
+    .home_hero_image {
+        min-height: 230px;
+        max-height: 280px;
+    }
+
+    .home_features {
+        grid-template-columns: 1fr;
+        margin-top: 2rem;
+    }
+}
+
