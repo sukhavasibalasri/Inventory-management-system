@@ -43,7 +43,8 @@ A simple MERN project that lets the user insert, update, delete & get products f
 
 ### 4.Home Page
   <img width="957" height="410" alt="image" src="https://github.com/user-attachments/assets/09b1a608-9958-401e-875d-2579e9a8768d" />
-### 4.Profile 
+  
+### 5.Profile 
 <img width="842" height="392" alt="image" src="https://github.com/user-attachments/assets/8ada723d-59e0-47ca-8f1f-46e7365fb1da" />
 
 
