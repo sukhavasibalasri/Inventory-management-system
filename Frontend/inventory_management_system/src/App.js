@@ -34,9 +34,8 @@ function App() {
 
   return (
     <div className="App">
-      {user && <Navbar title="IMS" user={user} onLogout={logout}></Navbar>}
-
       <Router>
+        {user && <Navbar title="IMS" user={user} onLogout={logout}></Navbar>}
         <Routes>
           <Route exact path="/" element={user ? <Home /> : <Navigate to="/login" replace />} />
           <Route path="/products" element={<ProtectedRoute user={user}><Products /></ProtectedRoute>} />
