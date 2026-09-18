@@ -31,7 +31,7 @@ export default function Register({ onLogin }) {
             localStorage.setItem('imsToken', data.token);
             localStorage.setItem('imsUser', JSON.stringify(data.user));
             onLogin(data.user);
-            navigate('/products');
+            navigate('/');
         } catch (err) {
             setError(err.message);
         } finally {

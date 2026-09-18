@@ -12,7 +12,8 @@ import Register from './components/Register';
 import {
   BrowserRouter as Router,
   Routes,
-  Route
+  Route,
+  Navigate
 } from 'react-router-dom';
 
 
@@ -29,17 +30,17 @@ function App() {
 
   return (
     <div className="App">
-      <Navbar title="IMS" user={user} onLogout={logout}></Navbar>
+      {user && <Navbar title="IMS" user={user} onLogout={logout}></Navbar>}
 
       <Router>
         <Routes>
-          <Route exact path="/" element={<Home />} />
+          <Route exact path="/" element={user ? <Home /> : <Navigate to="/login" replace />} />
           <Route path="/products" element={<Products />} />
           <Route path="/insertproduct" element={<InsertProduct />} />
           <Route path="/updateproduct/:id" element={<UpdateProduct />} />
           <Route path="/about" element={<About />} />
-          <Route path="/login" element={<Login onLogin={setUser} />} />
-          <Route path="/register" element={<Register onLogin={setUser} />} />
+          <Route path="/login" element={user ? <Navigate to="/" replace /> : <Login onLogin={setUser} />} />
+          <Route path="/register" element={user ? <Navigate to="/" replace /> : <Register onLogin={setUser} />} />
 
         </Routes>
 
