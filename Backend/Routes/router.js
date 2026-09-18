@@ -44,7 +44,7 @@ router.post('/auth/login', async (req, res) => {
 
 //Inserting(Creating) Data:
 router.post("/insertproduct", async (req, res) => {
-    const { ProductName, ProductPrice, ProductBarcode } = req.body;
+    const { ProductName, ProductPrice, ProductBarcode, ProductStock, ProductSold } = req.body;
 
     try {
         const pre = await products.findOne({ ProductBarcode: ProductBarcode })
@@ -54,7 +54,7 @@ router.post("/insertproduct", async (req, res) => {
             res.status(422).json("Product is already added.")
         }
         else {
-            const addProduct = new products({ ProductName, ProductPrice, ProductBarcode })
+            const addProduct = new products({ ProductName, ProductPrice, ProductBarcode, ProductStock, ProductSold })
 
             await addProduct.save();
             res.status(201).json(addProduct)
@@ -94,10 +94,10 @@ router.get('/products/:id', async (req, res) => {
 
 //Editing(Updating) Data:
 router.put('/updateproduct/:id', async (req, res) => {
-    const { ProductName, ProductPrice, ProductBarcode } = req.body;
+    const { ProductName, ProductPrice, ProductBarcode, ProductStock, ProductSold } = req.body;
 
     try {
-        const updateProducts = await products.findByIdAndUpdate(req.params.id, { ProductName, ProductPrice, ProductBarcode }, { new: true });
+        const updateProducts = await products.findByIdAndUpdate(req.params.id, { ProductName, ProductPrice, ProductBarcode, ProductStock, ProductSold }, { new: true });
         console.log("Data Updated");
         res.status(201).json(updateProducts);
     }
