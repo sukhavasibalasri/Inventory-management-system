@@ -9,6 +9,27 @@ const authSecret = process.env.JWT_SECRET || 'ims-development-secret';
 
 const createToken = (user) => jwt.sign({ id: user._id, email: user.email }, authSecret, { expiresIn: '7d' });
 
+const userResponse = (user) => ({
+    id: user._id,
+    name: user.name,
+    email: user.email,
+    phone: user.phone || '',
+    purpose: user.purpose || '',
+});
+
+const requireAuth = async (req, res, next) => {
+    try {
+        const token = req.headers.authorization?.replace('Bearer ', '');
+        const decoded = jwt.verify(token, authSecret);
+        const user = await users.findById(decoded.id);
+        if (!user) return res.status(401).json({ message: 'User account not found.' });
+        req.user = user;
+        next();
+    } catch (err) {
+        res.status(401).json({ message: 'Please log in again.' });
+    }
+};
+
 router.post('/auth/register', async (req, res) => {
     const { name, email, password } = req.body;
 
@@ -22,7 +43,7 @@ router.post('/auth/register', async (req, res) => {
 
         const hashedPassword = await bcrypt.hash(password, 10);
         const user = await users.create({ name, email: email.toLowerCase(), password: hashedPassword });
-        res.status(201).json({ token: createToken(user), user: { id: user._id, name: user.name, email: user.email } });
+        res.status(201).json({ token: createToken(user), user: userResponse(user) });
     } catch (err) {
         res.status(500).json({ message: 'Unable to create account.' });
     }
@@ -36,9 +57,28 @@ router.post('/auth/login', async (req, res) => {
         const validPassword = user && await bcrypt.compare(password || '', user.password);
         if (!validPassword) return res.status(401).json({ message: 'Invalid email or password.' });
 
-        res.json({ token: createToken(user), user: { id: user._id, name: user.name, email: user.email } });
+        res.json({ token: createToken(user), user: userResponse(user) });
     } catch (err) {
         res.status(500).json({ message: 'Unable to log in.' });
+    }
+});
+
+router.get('/auth/profile', requireAuth, (req, res) => {
+    res.json({ user: userResponse(req.user) });
+});
+
+router.put('/auth/profile', requireAuth, async (req, res) => {
+    const { name, phone, purpose } = req.body;
+    if (!name?.trim()) return res.status(400).json({ message: 'Name is required.' });
+
+    try {
+        req.user.name = name.trim();
+        req.user.phone = phone?.trim() || '';
+        req.user.purpose = purpose?.trim() || '';
+        await req.user.save();
+        res.json({ user: userResponse(req.user) });
+    } catch (err) {
+        res.status(500).json({ message: 'Unable to save profile.' });
     }
 });
 

@@ -8,6 +8,7 @@ import UpdateProduct from './components/UpdateProduct';
 import About from './components/About';
 import Login from './components/Login';
 import Register from './components/Register';
+import Profile from './components/Profile';
 
 import {
   BrowserRouter as Router,
@@ -44,6 +45,7 @@ function App() {
           <Route path="/about" element={<About />} />
           <Route path="/login" element={user ? <Navigate to="/" replace /> : <Login onLogin={setUser} />} />
           <Route path="/register" element={user ? <Navigate to="/" replace /> : <Register onLogin={setUser} />} />
+          <Route path="/profile" element={<ProtectedRoute user={user}><Profile user={user} onUserUpdate={setUser} /></ProtectedRoute>} />
 
         </Routes>
 
