@@ -219,6 +219,7 @@
     background: transparent;
     padding: 0.35rem 0.5rem;
     font-size: 0.95rem !important;
+    white-space: nowrap;
 }
 
 .profile_item {
@@ -226,6 +227,7 @@
     align-items: center;
     gap: 0.55rem;
     margin: 0 0.75rem;
+    white-space: nowrap;
 }
 
 .profile_button {
@@ -369,6 +371,8 @@
     align-items: center;
     justify-self: end;
     gap: 1rem;
+    flex-wrap: nowrap;
+    white-space: nowrap;
 }
 
 @media (max-width: 760px) {
