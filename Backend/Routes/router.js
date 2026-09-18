@@ -1,6 +1,46 @@
 const express = require('express');
 const router = express.Router();
 const products = require('../Models/Products');
+const users = require('../Models/Users');
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+
+const authSecret = process.env.JWT_SECRET || 'ims-development-secret';
+
+const createToken = (user) => jwt.sign({ id: user._id, email: user.email }, authSecret, { expiresIn: '7d' });
+
+router.post('/auth/register', async (req, res) => {
+    const { name, email, password } = req.body;
+
+    if (!name || !email || !password || password.length < 6) {
+        return res.status(400).json({ message: 'Name, email, and a password of at least 6 characters are required.' });
+    }
+
+    try {
+        const existingUser = await users.findOne({ email: email.toLowerCase() });
+        if (existingUser) return res.status(409).json({ message: 'An account with this email already exists.' });
+
+        const hashedPassword = await bcrypt.hash(password, 10);
+        const user = await users.create({ name, email: email.toLowerCase(), password: hashedPassword });
+        res.status(201).json({ token: createToken(user), user: { id: user._id, name: user.name, email: user.email } });
+    } catch (err) {
+        res.status(500).json({ message: 'Unable to create account.' });
+    }
+});
+
+router.post('/auth/login', async (req, res) => {
+    const { email, password } = req.body;
+
+    try {
+        const user = await users.findOne({ email: email?.toLowerCase() });
+        const validPassword = user && await bcrypt.compare(password || '', user.password);
+        if (!validPassword) return res.status(401).json({ message: 'Invalid email or password.' });
+
+        res.json({ token: createToken(user), user: { id: user._id, name: user.name, email: user.email } });
+    } catch (err) {
+        res.status(500).json({ message: 'Unable to log in.' });
+    }
+});
 
 //Inserting(Creating) Data:
 router.post("/insertproduct", async (req, res) => {

@@ -19,6 +19,9 @@ export default function Navbar(props) {
               <li className="nav-item">
                 <a className="nav-link active text-white fs-4" aria-current="page" href="/about">About</a>
               </li>
+              {!props.user && <li className="nav-item"><a className="nav-link active text-white fs-4" href="/login">Log in</a></li>}
+              {!props.user && <li className="nav-item"><a className="nav-link active text-white fs-4" href="/register">Sign up</a></li>}
+              {props.user && <li className="nav-item"><button className="nav-link active text-white fs-4 nav_logout" onClick={props.onLogout}>Log out</button></li>}
             </ul>
             <form className="d-flex" role="search">
               <input className="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
