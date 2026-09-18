@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react'
-import { NavLink } from 'react-router-dom'
+import { NavLink, useSearchParams } from 'react-router-dom'
 
 export default function Products() {
+    const [searchParams] = useSearchParams();
+    const searchTerm = searchParams.get('search')?.toLowerCase() || '';
 
     useEffect(() => {
         getProducts();
@@ -54,6 +56,11 @@ export default function Products() {
 
     }
 
+    const filteredProducts = productData.filter((product) =>
+        product.ProductName.toLowerCase().includes(searchTerm) ||
+        String(product.ProductBarcode).includes(searchTerm)
+    );
+
     return (
         <>
 
@@ -80,7 +87,7 @@ export default function Products() {
                         <tbody>
 
                             {
-                                productData.map((element, id) => {
+                                filteredProducts.map((element, id) => {
                                     return (
                                         <>
                                             <tr>
@@ -99,6 +106,8 @@ export default function Products() {
                                     )
                                 })
                             }
+
+                            {filteredProducts.length === 0 && <tr><td colSpan="8" className="text-center">No products found.</td></tr>}
 
                         </tbody>
                     </table>

@@ -1,6 +1,16 @@
-import React from 'react'
+import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom';
 
 export default function Navbar(props) {
+  const [searchTerm, setSearchTerm] = useState('');
+  const navigate = useNavigate();
+
+  const searchProducts = (event) => {
+    event.preventDefault();
+    const query = searchTerm.trim();
+    navigate(query ? `/products?search=${encodeURIComponent(query)}` : '/products');
+  };
+
   return (
     <div>
       <navBar className="navbar navbar-expand-lg bg-danger">
@@ -17,8 +27,8 @@ export default function Navbar(props) {
                 <a className="nav-link active text-white fs-4" aria-current="page" href="/about">About</a>
               </li>
             </ul>
-            <form className="d-flex navbar_search" role="search">
-              <input className="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
+            <form className="d-flex navbar_search" role="search" onSubmit={searchProducts}>
+              <input className="form-control me-2" type="search" placeholder="Search products" aria-label="Search products" value={searchTerm} onChange={(event) => setSearchTerm(event.target.value)} />
               <button className="btn btn-primary fs-5" type="submit">Search</button>
             </form>
             <div className="navbar_right">
