@@ -12,6 +12,7 @@ export default function Profile({ user, onUserUpdate }) {
     const [message, setMessage] = useState('');
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(true);
+    const [editing, setEditing] = useState(false);
     const navigate = useNavigate();
     const token = localStorage.getItem('imsToken');
 
@@ -56,6 +57,7 @@ export default function Profile({ user, onUserUpdate }) {
             onUserUpdate(data.user);
             setForm(data.user);
             setMessage('Profile saved successfully.');
+            setEditing(false);
         } catch (err) {
             setError(err.message);
         }
@@ -67,7 +69,16 @@ export default function Profile({ user, onUserUpdate }) {
                 <p className='home_kicker'>ACCOUNT PROFILE</p>
                 <h1>Your profile</h1>
                 <p className='auth_subtitle'>Add a few details so your IMS workspace is easier to identify.</p>
-                {loading ? <p>Loading profile...</p> : <form onSubmit={saveProfile}>
+                {loading ? <p>Loading profile...</p> : <>
+                    <div className='saved_profile_details profile_summary'>
+                        <h2>Saved information</h2>
+                        <p><strong>Name:</strong> {form.name || 'Not added'}</p>
+                        <p><strong>Email:</strong> {form.email || 'Not added'}</p>
+                        <p><strong>Phone:</strong> {form.phone || 'Not added'}</p>
+                        <p><strong>Purpose:</strong> {form.purpose || 'Not added'}</p>
+                        <button className='auth_button' type='button' onClick={() => setEditing(true)}>Update information</button>
+                    </div>
+                    {editing && <form onSubmit={saveProfile}>
                     <label htmlFor='profile_name'>Name</label>
                     <input id='profile_name' name='name' type='text' value={form.name} onChange={updateField} required />
                     <label htmlFor='profile_email'>Email</label>
@@ -79,14 +90,9 @@ export default function Profile({ user, onUserUpdate }) {
                     {error && <p className='auth_error'>{error}</p>}
                     {message && <p className='profile_success'>{message}</p>}
                     <button className='auth_button' type='submit'>Save profile</button>
-                </form>}
-                {!loading && <div className='saved_profile_details'>
-                    <h2>Saved information</h2>
-                    <p><strong>Name:</strong> {form.name || 'Not added'}</p>
-                    <p><strong>Email:</strong> {form.email || 'Not added'}</p>
-                    <p><strong>Phone:</strong> {form.phone || 'Not added'}</p>
-                    <p><strong>Purpose:</strong> {form.purpose || 'Not added'}</p>
-                </div>}
+                    <button className='profile_cancel' type='button' onClick={() => setEditing(false)}>Cancel</button>
+                    </form>}
+                </>}
                 <button className='profile_back' type='button' onClick={() => navigate('/')}>Back to IMS</button>
             </section>
         </main>
