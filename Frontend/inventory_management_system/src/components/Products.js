@@ -4,6 +4,7 @@ import { NavLink, useSearchParams } from 'react-router-dom'
 export default function Products() {
     const [searchParams] = useSearchParams();
     const searchTerm = searchParams.get('search')?.toLowerCase() || '';
+    const [showChart, setShowChart] = useState(false);
 
     useEffect(() => {
         getProducts();
@@ -61,6 +62,22 @@ export default function Products() {
         String(product.ProductBarcode).includes(searchTerm)
     );
 
+    const formatMoney = (value) => `$${Number(value || 0).toFixed(2)}`;
+    const getFinancials = (product) => {
+        const sold = Number(product.ProductSold || 0);
+        const revenue = Number(product.ProductPrice || 0) * sold;
+        const cost = Number(product.ProductBuyPrice || 0) * sold;
+        return { sold, revenue, cost, result: revenue - cost };
+    };
+
+    const chartMax = Math.max(
+        ...filteredProducts.flatMap((product) => {
+            const { revenue, cost } = getFinancials(product);
+            return [revenue, cost];
+        }),
+        1
+    );
+
     return (
         <>
 
@@ -68,8 +85,38 @@ export default function Products() {
             <div className='container-fluid p-5'>
                 <h1>Products Inventory</h1>
                 <div className='add_button'>
+                    <button type="button" className='btn btn-dark fs-5 me-2' onClick={() => setShowChart(!showChart)}>
+                        {showChart ? 'Hide Chart' : 'View Chart'}
+                    </button>
                     <NavLink to="/insertproduct" className='btn btn-primary fs-5'> + Add New Product</NavLink>
                 </div>
+                {showChart && <section className='inventory_chart mt-4'>
+                    <div className='inventory_chart_header'>
+                        <div>
+                            <h2>Profit and Loss by Product</h2>
+                            <p>Based on selling price, buy price, and sold quantity.</p>
+                        </div>
+                    </div>
+                    {filteredProducts.length === 0 && <p className='text-muted'>Add products to see the chart.</p>}
+                    <div className='chart_grid'>
+                        {filteredProducts.map((product) => {
+                            const { sold, revenue, cost, result } = getFinancials(product);
+                            return <article className='chart_product' key={`chart-${product._id}`}>
+                                <div className='chart_product_title'>
+                                    <h3>{product.ProductName}</h3>
+                                    <strong className={result >= 0 ? 'profit_value' : 'loss_value'}>
+                                        {result >= 0 ? 'Profit ' : 'Loss '}{formatMoney(Math.abs(result))}
+                                    </strong>
+                                </div>
+                                <p>{sold} item{sold === 1 ? '' : 's'} sold</p>
+                                <div className='chart_metric'><span>Revenue</span><b>{formatMoney(revenue)}</b></div>
+                                <div className='chart_bar'><span className='revenue_bar' style={{ width: `${(revenue / chartMax) * 100}%` }} /></div>
+                                <div className='chart_metric'><span>Cost</span><b>{formatMoney(cost)}</b></div>
+                                <div className='chart_bar'><span className='cost_bar' style={{ width: `${(cost / chartMax) * 100}%` }} /></div>
+                            </article>;
+                        })}
+                    </div>
+                </section>}
                 <div className="overflow-auto mt-3" style={{ maxHeight: "38rem" }}>
                     <table className="table table-striped table-hover mt-3 fs-5">
                         <thead>
@@ -77,6 +124,7 @@ export default function Products() {
                                 <th scope="col">#</th>
                                 <th scope="col">Product Name</th>
                                 <th scope="col">Product Price</th>
+                                <th scope="col">Buy Price</th>
                                 <th scope="col">Product Barcode</th>
                                 <th scope="col">Still Left</th>
                                 <th scope="col">Sold</th>
@@ -94,6 +142,7 @@ export default function Products() {
                                                 <th scope="row">{id + 1}</th>
                                                 <td>{element.ProductName}</td>
                                                 <td>{element.ProductPrice}</td>
+                                                <td>{element.ProductBuyPrice || 0}</td>
                                                 <td>{element.ProductBarcode}</td>
                                                 <td>{element.ProductStock || 0}</td>
                                                 <td>{element.ProductSold || 0}</td>
@@ -107,7 +156,7 @@ export default function Products() {
                                 })
                             }
 
-                            {filteredProducts.length === 0 && <tr><td colSpan="8" className="text-center">No products found.</td></tr>}
+                            {filteredProducts.length === 0 && <tr><td colSpan="9" className="text-center">No products found.</td></tr>}
 
                         </tbody>
                     </table>

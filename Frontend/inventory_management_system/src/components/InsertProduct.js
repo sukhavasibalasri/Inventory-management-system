@@ -4,6 +4,7 @@ import { NavLink, useNavigate } from 'react-router-dom';
 export default function InsertProduct() {
     const [productName, setProductName] = useState("");
     const [productPrice, setProductPrice] = useState();
+    const [productBuyPrice, setProductBuyPrice] = useState(0);
     const [productBarcode, setProductBarcode] = useState();
     const [productStock, setProductStock] = useState(0);
     const [productSold, setProductSold] = useState(0);
@@ -18,6 +19,8 @@ export default function InsertProduct() {
     const setPrice = (e) => {
         setProductPrice(e.target.value);
     }
+
+    const setBuyPrice = (e) => setProductBuyPrice(e.target.value);
 
     const setBarcode = (e) => {
         const value = e.target.value.slice(0, 12);
@@ -44,7 +47,7 @@ export default function InsertProduct() {
                 headers: {
                     "Content-Type": "application/json"
                 },
-                body: JSON.stringify({ "ProductName": productName, "ProductPrice": productPrice, "ProductBarcode": productBarcode, "ProductStock": productStock, "ProductSold": productSold })
+                body: JSON.stringify({ "ProductName": productName, "ProductPrice": productPrice, "ProductBuyPrice": productBuyPrice, "ProductBarcode": productBarcode, "ProductStock": productStock, "ProductSold": productSold })
             });
 
             await res.json();
@@ -53,6 +56,7 @@ export default function InsertProduct() {
                 alert("Data Inserted");
                 setProductName("");
                 setProductPrice(0);
+                setProductBuyPrice(0);
                 setProductBarcode(0);
                 setProductStock(0);
                 setProductSold(0);
@@ -83,6 +87,10 @@ export default function InsertProduct() {
             <div className="mt-3 col-lg-6 col-md-6 col-12 fs-4">
                 <label htmlFor="product_price" className="form-label fw-bold">Product Price</label>
                 <input type="number" onChange={setPrice} value={productPrice} className="form-control fs-5" id="product_price" placeholder="Enter Product Price" required />
+            </div>
+            <div className="mt-3 col-lg-6 col-md-6 col-12 fs-4">
+                <label htmlFor="product_buy_price" className="form-label fw-bold">Buy Price</label>
+                <input type="number" min="0" onChange={setBuyPrice} value={productBuyPrice} className="form-control fs-5" id="product_buy_price" placeholder="What did you pay?" required />
             </div>
             <div className="mt-3 mb-5 col-lg-6 col-md-6 col-12 fs-4">
                 <label htmlFor="product_barcode" className="form-label fw-bold">Product Barcode</label>
