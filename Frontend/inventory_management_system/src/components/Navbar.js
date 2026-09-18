@@ -14,13 +14,12 @@ export default function Navbar(props) {
                 <a className="nav-link active text-white fs-4" aria-current="page" href="/">{props.title}</a>
               </li>
               <li className="nav-item">
-                <a className="nav-link active text-white fs-4" aria-current="page" href="/products">Products</a>
-              </li>
-              <li className="nav-item">
                 <a className="nav-link active text-white fs-4" aria-current="page" href="/about">About</a>
               </li>
-              {!props.user && <li className="nav-item"><a className="nav-link active text-white fs-4" href="/login">Log in</a></li>}
-              {!props.user && <li className="nav-item"><a className="nav-link active text-white fs-4" href="/register">Sign up</a></li>}
+              {props.user && <li className="nav-item profile_item">
+                <span className="profile_symbol" aria-hidden="true">{props.user.name.charAt(0).toUpperCase()}</span>
+                <span className="profile_name">{props.user.name}</span>
+              </li>}
               {props.user && <li className="nav-item"><button className="nav-link active text-white fs-4 nav_logout" onClick={props.onLogout}>Log out</button></li>}
             </ul>
             <form className="d-flex" role="search">

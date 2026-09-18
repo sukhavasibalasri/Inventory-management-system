@@ -139,6 +139,32 @@
     background: transparent;
 }
 
+.profile_item {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    margin: 0 0.75rem;
+}
+
+.profile_symbol {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    color: #1f2933;
+    background: #f7c948;
+    font-size: 1rem;
+    font-weight: 800;
+}
+
+.profile_name {
+    color: #fff;
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
 .auth_page {
     display: flex;
     justify-content: center;
