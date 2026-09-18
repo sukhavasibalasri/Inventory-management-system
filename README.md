@@ -30,12 +30,15 @@ A simple MERN project that lets the user insert, update, delete & get products f
 
 
 ### 2. Add Products 
-  <img width="947" height="384" alt="image" src="https://github.com/user-attachments/assets/ca083c01-8442-4d57-8941-72721b7a80b7" />
-  <img width="536" height="406" alt="image" src="https://github.com/user-attachments/assets/ae669fa3-d623-467c-8419-a178e07bc1d2" />
+  <img width="949" height="300" alt="image" src="https://github.com/user-attachments/assets/f4861f3c-d2a3-4704-80ba-175136c67790" />
+   <img width="941" height="406" alt="image" src="https://github.com/user-attachments/assets/83fd118a-0f62-4fd8-986f-3c7f40e6103f" />
+  <img width="586" height="407" alt="image" src="https://github.com/user-attachments/assets/496fe3f0-0bda-42ce-851c-a6316e43bd8a" />
 
+  
+### 3.About
+<img width="932" height="419" alt="image" src="https://github.com/user-attachments/assets/ed97b285-6d6c-4835-901c-69191616d12b" />
 
-
-### 3.Home Page
+### 4.Home Page
   <img width="957" height="410" alt="image" src="https://github.com/user-attachments/assets/09b1a608-9958-401e-875d-2579e9a8768d" />
 
 
