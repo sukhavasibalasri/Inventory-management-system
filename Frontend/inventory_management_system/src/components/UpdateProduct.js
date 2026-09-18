@@ -5,6 +5,8 @@ export default function InsertProduct() {
     const [productName, setProductName] = useState("");
     const [productPrice, setProductPrice] = useState();
     const [productBarcode, setProductBarcode] = useState();
+    const [productStock, setProductStock] = useState(0);
+    const [productSold, setProductSold] = useState(0);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
     const navigate = useNavigate("");
@@ -21,6 +23,9 @@ export default function InsertProduct() {
         const value = e.target.value.slice(0, 12);
         setProductBarcode(value);
     };
+
+    const setStock = (e) => setProductStock(e.target.value);
+    const setSold = (e) => setProductSold(e.target.value);
 
     const {id} = useParams("");
 
@@ -41,6 +46,8 @@ export default function InsertProduct() {
               setProductName(data.ProductName);
               setProductPrice(data.ProductPrice);
               setProductBarcode(data.ProductBarcode);
+              setProductStock(data.ProductStock || 0);
+              setProductSold(data.ProductSold || 0);
             } else {
               console.log("Something went wrong. Please try again.");
             }
@@ -69,7 +76,7 @@ export default function InsertProduct() {
                 headers: {
                     "Content-Type": "application/json"
                 },
-                body: JSON.stringify({ "ProductName": productName, "ProductPrice": productPrice, "ProductBarcode": productBarcode })
+                body: JSON.stringify({ "ProductName": productName, "ProductPrice": productPrice, "ProductBarcode": productBarcode, "ProductStock": productStock, "ProductSold": productSold })
             });
 
             await response.json();
@@ -103,6 +110,14 @@ export default function InsertProduct() {
             <div className="mt-3 mb-5 col-lg-6 col-md-6 col-12">
                 <label htmlFor="product_barcode" className="form-label fs-4 fw-bold">Product Barcode</label>
                 <input type="number" onChange={setBarcode} value={productBarcode} maxLength={12} className="form-control fs-5" id="product_barcode" placeholder="Enter Product Barcode" required />
+            </div>
+            <div className="mt-3 col-lg-6 col-md-6 col-12">
+                <label htmlFor="product_stock" className="form-label fs-4 fw-bold">Still Left</label>
+                <input type="number" min="0" onChange={setStock} value={productStock} className="form-control fs-5" id="product_stock" required />
+            </div>
+            <div className="mt-3 mb-5 col-lg-6 col-md-6 col-12">
+                <label htmlFor="product_sold" className="form-label fs-4 fw-bold">Sold</label>
+                <input type="number" min="0" onChange={setSold} value={productSold} className="form-control fs-5" id="product_sold" required />
             </div>
             <div className='d-flex justify-content-center col-lg-6 col-md-6'>
                 <NavLink to="/products" className='btn btn-primary me-5 fs-4'>Cancel</NavLink>
