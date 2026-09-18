@@ -25,7 +25,7 @@ A simple MERN project that lets the user insert, update, delete & get products f
 
 ## Output:
 ### 1. Register Page
-    <img width="895" height="414" alt="image" src="https://github.com/user-attachments/assets/98fc8ade-2b5a-480b-b6c0-df65725dbe38" />
+ <img width="895" height="414" alt="image" src="https://github.com/user-attachments/assets/98fc8ade-2b5a-480b-b6c0-df65725dbe38" />
 
 
 ### 2. Products
