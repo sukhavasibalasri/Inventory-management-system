@@ -273,6 +273,29 @@
     font-weight: 800;
 }
 
+.profile_picture {
+    object-fit: cover;
+}
+
+.profile_picture_large,
+.profile_picture_preview {
+    display: block;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.profile_picture_large {
+    width: 5rem;
+    height: 5rem;
+    margin-bottom: 1rem;
+}
+
+.profile_picture_preview {
+    width: 4rem;
+    height: 4rem;
+    margin-top: 0.5rem;
+}
+
 .profile_name {
     color: #fff;
     font-size: 1.1rem;

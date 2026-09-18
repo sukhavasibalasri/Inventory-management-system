@@ -8,6 +8,7 @@ export default function Profile({ user, onUserUpdate }) {
         email: user.email || savedUser.email || '',
         phone: user.phone || savedUser.phone || '',
         purpose: user.purpose || savedUser.purpose || '',
+        profilePicture: user.profilePicture || savedUser.profilePicture || '',
     });
     const [message, setMessage] = useState('');
     const [error, setError] = useState('');
@@ -38,6 +39,22 @@ export default function Profile({ user, onUserUpdate }) {
         setForm({ ...form, [event.target.name]: event.target.value });
     };
 
+    const selectPicture = (event) => {
+        const file = event.target.files[0];
+        if (!file) return;
+        if (!file.type.startsWith('image/')) {
+            setError('Please choose an image file.');
+            return;
+        }
+        if (file.size > 2 * 1024 * 1024) {
+            setError('Please choose an image smaller than 2 MB.');
+            return;
+        }
+        const reader = new FileReader();
+        reader.onload = () => setForm((currentForm) => ({ ...currentForm, profilePicture: reader.result }));
+        reader.readAsDataURL(file);
+    };
+
     const saveProfile = async (event) => {
         event.preventDefault();
         setMessage('');
@@ -49,7 +66,7 @@ export default function Profile({ user, onUserUpdate }) {
                     'Content-Type': 'application/json',
                     Authorization: `Bearer ${token}`,
                 },
-                body: JSON.stringify({ name: form.name, phone: form.phone, purpose: form.purpose }),
+                body: JSON.stringify({ name: form.name, phone: form.phone, purpose: form.purpose, profilePicture: form.profilePicture }),
             });
             const data = await response.json();
             if (!response.ok) throw new Error(data.message || 'Unable to save profile.');
@@ -72,6 +89,7 @@ export default function Profile({ user, onUserUpdate }) {
                 {loading ? <p>Loading profile...</p> : <>
                     <div className='saved_profile_details profile_summary'>
                         <h2>Saved information</h2>
+                        {form.profilePicture && <img className='profile_picture_large' src={form.profilePicture} alt='Your profile' />}
                         <p><strong>Name:</strong> {form.name || 'Not added'}</p>
                         <p><strong>Email:</strong> {form.email || 'Not added'}</p>
                         <p><strong>Phone:</strong> {form.phone || 'Not added'}</p>
@@ -87,6 +105,9 @@ export default function Profile({ user, onUserUpdate }) {
                     <input id='profile_phone' name='phone' type='tel' placeholder='Enter phone number' value={form.phone || ''} onChange={updateField} />
                     <label htmlFor='profile_purpose'>Purpose</label>
                     <textarea id='profile_purpose' name='purpose' rows='4' placeholder='How will you use IMS?' value={form.purpose || ''} onChange={updateField} />
+                    <label htmlFor='profile_picture'>Profile picture</label>
+                    <input id='profile_picture' type='file' accept='image/*' onChange={selectPicture} />
+                    {form.profilePicture && <img className='profile_picture_preview' src={form.profilePicture} alt='Selected profile preview' />}
                     {error && <p className='auth_error'>{error}</p>}
                     {message && <p className='profile_success'>{message}</p>}
                     <button className='auth_button' type='submit'>Save profile</button>

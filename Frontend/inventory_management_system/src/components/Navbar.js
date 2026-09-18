@@ -33,7 +33,7 @@ export default function Navbar(props) {
             </form>
             <div className="navbar_right">
               {props.user && <button className="profile_item profile_button" type="button" onClick={() => navigate('/profile')}>
-                <span className="profile_symbol" aria-hidden="true">{props.user.name.charAt(0).toUpperCase()}</span>
+                {props.user.profilePicture ? <img className="profile_symbol profile_picture" src={props.user.profilePicture} alt="" /> : <span className="profile_symbol" aria-hidden="true">{props.user.name.charAt(0).toUpperCase()}</span>}
                 <span className="profile_name">{props.user.name}</span>
               </button>}
               {props.user && <button className="nav-link active text-white fs-4 nav_logout" onClick={props.onLogout}>Log out</button>}

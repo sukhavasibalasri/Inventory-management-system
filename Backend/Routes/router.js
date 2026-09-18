@@ -15,6 +15,7 @@ const userResponse = (user) => ({
     email: user.email,
     phone: user.phone || '',
     purpose: user.purpose || '',
+    profilePicture: user.profilePicture || '',
 });
 
 const requireAuth = async (req, res, next) => {
@@ -68,13 +69,14 @@ router.get('/auth/profile', requireAuth, (req, res) => {
 });
 
 router.put('/auth/profile', requireAuth, async (req, res) => {
-    const { name, phone, purpose } = req.body;
+    const { name, phone, purpose, profilePicture } = req.body;
     if (!name?.trim()) return res.status(400).json({ message: 'Name is required.' });
 
     try {
         req.user.name = name.trim();
         req.user.phone = phone?.trim() || '';
         req.user.purpose = purpose?.trim() || '';
+        req.user.profilePicture = profilePicture || '';
         await req.user.save();
         res.json({ user: userResponse(req.user) });
     } catch (err) {
