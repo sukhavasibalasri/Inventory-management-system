@@ -83,11 +83,10 @@ export default function InsertProduct() {
                 body: JSON.stringify({ "ProductName": productName, "ProductPrice": productPrice, "ProductBuyPrice": productBuyPrice, "ProductBarcode": productBarcode, "ProductStock": productStock, "ProductSold": productSold })
             });
 
-            await response.json();
+            const updatedProduct = await response.json();
 
             if (response.status === 201) {
-                alert("Data Updated");
-                navigate('/products');
+                navigate('/products', { state: { updatedProduct } });
             }
             else {
                 setError("Something went wrong. Please try again.");

@@ -1,10 +1,19 @@
 import React, { useEffect, useState } from 'react'
-import { NavLink, useSearchParams } from 'react-router-dom'
+import { NavLink, useLocation, useSearchParams } from 'react-router-dom'
 
 export default function Products() {
     const [searchParams] = useSearchParams();
+    const location = useLocation();
     const searchTerm = searchParams.get('search')?.toLowerCase() || '';
     const [showChart, setShowChart] = useState(false);
+    const [savedProduct, setSavedProduct] = useState(location.state?.updatedProduct || null);
+
+    useEffect(() => {
+        if (location.state?.updatedProduct) {
+            setSavedProduct(location.state.updatedProduct);
+            window.history.replaceState({}, document.title, window.location.pathname + window.location.search);
+        }
+    }, [location.state]);
 
     useEffect(() => {
         getProducts();
@@ -84,6 +93,11 @@ export default function Products() {
 
             <div className='container-fluid p-5'>
                 <h1>Products Inventory</h1>
+                {savedProduct && <div className='saved_product_notice'>
+                    <strong>Product information saved.</strong>
+                    <span>{savedProduct.ProductName} | Sell: {savedProduct.ProductPrice} | Buy: {savedProduct.ProductBuyPrice || 0} | Left: {savedProduct.ProductStock || 0} | Sold: {savedProduct.ProductSold || 0}</span>
+                    <button type='button' onClick={() => setSavedProduct(null)} aria-label='Dismiss saved product message'>x</button>
+                </div>}
                 <div className='add_button'>
                     <button type="button" className='btn btn-dark fs-5 me-2' onClick={() => setShowChart(!showChart)}>
                         {showChart ? 'Hide Chart' : 'View Chart'}

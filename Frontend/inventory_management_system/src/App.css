@@ -87,6 +87,30 @@
     background-color: #D83830;
 }
 
+.saved_product_notice {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    margin: 1rem 0;
+    padding: 0.9rem 1rem;
+    color: #155d35;
+    background: #e5f5eb;
+    border-left: 4px solid #18864b;
+}
+
+.saved_product_notice span {
+    flex: 1;
+}
+
+.saved_product_notice button {
+    border: 0;
+    color: #155d35;
+    background: transparent;
+    font-size: 1.25rem;
+    font-weight: 700;
+    cursor: pointer;
+}
+
 .home_page {
     min-height: calc(100vh - 72px);
     padding: 3.5rem clamp(1.25rem, 5vw, 5rem);
