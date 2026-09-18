@@ -2,7 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 export default function Profile({ user, onUserUpdate }) {
-    const [form, setForm] = useState({ name: user.name || '', email: user.email || '', phone: '', purpose: '' });
+    const savedUser = JSON.parse(localStorage.getItem('imsUser') || '{}');
+    const [form, setForm] = useState({
+        name: user.name || savedUser.name || '',
+        email: user.email || savedUser.email || '',
+        phone: user.phone || savedUser.phone || '',
+        purpose: user.purpose || savedUser.purpose || '',
+    });
     const [message, setMessage] = useState('');
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(true);
@@ -17,7 +23,7 @@ export default function Profile({ user, onUserUpdate }) {
                 });
                 const data = await response.json();
                 if (!response.ok) throw new Error(data.message || 'Unable to load profile.');
-                setForm(data.user);
+                setForm((currentForm) => ({ ...currentForm, ...data.user }));
             } catch (err) {
                 setError(err.message);
             } finally {
@@ -74,6 +80,13 @@ export default function Profile({ user, onUserUpdate }) {
                     {message && <p className='profile_success'>{message}</p>}
                     <button className='auth_button' type='submit'>Save profile</button>
                 </form>}
+                {!loading && <div className='saved_profile_details'>
+                    <h2>Saved information</h2>
+                    <p><strong>Name:</strong> {form.name || 'Not added'}</p>
+                    <p><strong>Email:</strong> {form.email || 'Not added'}</p>
+                    <p><strong>Phone:</strong> {form.phone || 'Not added'}</p>
+                    <p><strong>Purpose:</strong> {form.purpose || 'Not added'}</p>
+                </div>}
                 <button className='profile_back' type='button' onClick={() => navigate('/')}>Back to IMS</button>
             </section>
         </main>

@@ -374,6 +374,23 @@
     font-weight: 700;
 }
 
+.saved_profile_details {
+    margin-top: 1.5rem;
+    padding: 1rem;
+    color: #1f2933;
+    background: #f5f1e8;
+    border-left: 4px solid #18864b;
+}
+
+.saved_profile_details h2 {
+    margin: 0 0 0.75rem;
+    font-size: 1.15rem;
+}
+
+.saved_profile_details p {
+    margin: 0.35rem 0;
+}
+
 .navbar-collapse {
     display: grid !important;
     grid-template-columns: 1fr minmax(280px, 420px) 1fr;
